@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Espere! Sua matrícula ainda não está completa</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #0a0a0a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      padding: 24px 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .video-wrapper {
+      width: 100%;
+    }
+
+    .botoes {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .botoes.visivel {
+      display: flex;
+    }
+
+    .botoes.animar {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-sim {
+      display: block;
+      width: 100%;
+      max-width: 560px;
+      background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
+      color: #ffffff;
+      text-decoration: none;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      padding: 22px 28px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(34, 197, 94, .35);
+      animation: pulsar 1.8s ease-in-out infinite;
+    }
+
+    .btn-sim:hover {
+      filter: brightness(1.08);
+    }
+
+    @keyframes pulsar {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .btn-nao {
+      color: #6b7280;
+      text-decoration: underline;
+      font-size: 15px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-nao:hover {
+      color: #9ca3af;
+    }
+
+    @media (max-width: 480px) {
+      .btn-sim { font-size: 18px; padding: 18px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="video-wrapper">
+      <vturb-smartplayer id="vid-69cae927f343d80547f6e9bd" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
+      <script type="text/javascript">
+        var s = document.createElement("script");
+        s.src = "https://scripts.converteai.net/98f98845-02a5-4e75-a39a-bbafedfa3212/players/69cae927f343d80547f6e9bd/v4/player.js",
+        s.async = !0, document.head.appendChild(s);
+      </script>
+    </div>
+
+    <div class="botoes" id="botoes">
+      <!-- TODO: trocar o href pelo link de checkout do upsell -->
+      <a class="btn-sim" href="#" id="btn-sim">SIM, QUERO PONTOS EXTRAS</a>
+      <!-- TODO: trocar o href pelo link de destino de quem recusa (obrigado/área de membros) -->
+      <a class="btn-nao" href="#" id="btn-nao">Não tenho interesse</a>
+    </div>
+  </div>
+
+  <script>
+    // Delay para exibir os botões, em segundos, contado a partir do carregamento da página.
+    var DELAY_BOTOES_SEGUNDOS = 5;
+
+    setTimeout(function () {
+      var botoes = document.getElementById("botoes");
+      botoes.classList.add("visivel");
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          botoes.classList.add("animar");
+        });
+      });
+    }, DELAY_BOTOES_SEGUNDOS * 1000);
+  </script>
+</body>
+</html>
