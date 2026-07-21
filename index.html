@@ -99,10 +99,10 @@
 <body>
   <div class="container">
     <div class="video-wrapper">
-      <vturb-smartplayer id="vid-69cae927f343d80547f6e9bd" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
+      <vturb-smartplayer id="vid-6a5fef25c99e7e122a462f02" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
       <script type="text/javascript">
         var s = document.createElement("script");
-        s.src = "https://scripts.converteai.net/98f98845-02a5-4e75-a39a-bbafedfa3212/players/69cae927f343d80547f6e9bd/v4/player.js",
+        s.src = "https://scripts.converteai.net/98f98845-02a5-4e75-a39a-bbafedfa3212/players/6a5fef25c99e7e122a462f02/v4/player.js",
         s.async = !0, document.head.appendChild(s);
       </script>
     </div>
@@ -115,10 +115,15 @@
   </div>
 
   <script>
-    // Delay para exibir os botões, em segundos, contado a partir do carregamento da página.
-    var DELAY_BOTOES_SEGUNDOS = 5;
+    // Momento do VÍDEO (não da página) em que os botões aparecem: 4min18s = 258s.
+    var SEGUNDOS_DO_VIDEO = 258;
 
-    setTimeout(function () {
+    var jaExibiu = false;
+    var tentativas = 0;
+
+    function exibirBotoes() {
+      if (jaExibiu) return;
+      jaExibiu = true;
       var botoes = document.getElementById("botoes");
       botoes.classList.add("visivel");
       requestAnimationFrame(function () {
@@ -126,7 +131,26 @@
           botoes.classList.add("animar");
         });
       });
-    }, DELAY_BOTOES_SEGUNDOS * 1000);
+    }
+
+    function vigiarProgressoDoVideo() {
+      if (typeof smartplayer === "undefined" || !(smartplayer.instances && smartplayer.instances.length)) {
+        // Player ainda não carregou; tenta de novo por até 30s.
+        if (tentativas >= 30) return;
+        tentativas += 1;
+        return setTimeout(vigiarProgressoDoVideo, 1000);
+      }
+      var player = smartplayer.instances[0];
+      player.on("timeupdate", function () {
+        if (jaExibiu) return;
+        // No smart autoplay o vídeo roda mudo antes do clique; só conta após o play real.
+        if (player.smartAutoPlay && player.analytics && !player.analytics.hasStarted) return;
+        if (player.video.currentTime < SEGUNDOS_DO_VIDEO) return;
+        exibirBotoes();
+      });
+    }
+
+    vigiarProgressoDoVideo();
   </script>
 </body>
 </html>
