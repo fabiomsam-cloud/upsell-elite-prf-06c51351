@@ -126,11 +126,9 @@
       jaExibiu = true;
       var botoes = document.getElementById("botoes");
       botoes.classList.add("visivel");
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          botoes.classList.add("animar");
-        });
-      });
+      setTimeout(function () {
+        botoes.classList.add("animar");
+      }, 50);
     }
 
     function vigiarProgressoDoVideo() {
